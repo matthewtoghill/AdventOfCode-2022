@@ -3,13 +3,13 @@
 public static class Input
 {
     public static string ReadAll()
-    => File.ReadAllText(@$"..\..\..\..\data\{System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name}.txt");
+        => File.ReadAllText(@$"..\..\..\..\data\{System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name}.txt");
 
     public static string ReadAll(int day)
         => File.ReadAllText(@$"..\..\..\..\data\day{day:00}.txt");
 
     public static string[] ReadAllLines()
-    => File.ReadAllLines(@$"..\..\..\..\data\{System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name}.txt");
+        => File.ReadAllLines(@$"..\..\..\..\data\{System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name}.txt");
 
     public static string[] ReadAllLines(int day)
         => File.ReadAllLines(@$"..\..\..\..\data\day{day:00}.txt");
