@@ -26,6 +26,18 @@ public static class Input
         => text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
                .Select(x => T.Parse(x, null));
 
+    public static string[] SplitOn(this string text, StringSplitOptions splitOptions, params string[] separators)
+        => text.Split(separators, splitOptions);
+
+    public static string[] SplitOn(this string text, params string[] separators)
+        => text.Split(separators, StringSplitOptions.None);
+
+    public static string[] SplitOn(this string text, StringSplitOptions splitOptions, params char[] separators)
+        => text.Split(separators, splitOptions);
+
+    public static string[] SplitOn(this string text, params char[] separators)
+        => text.Split(separators, StringSplitOptions.None);
+
     public static IEnumerable<string> ReadAsParagraphs()
         => ReadAll().Split(new[] { "\n\n", "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
