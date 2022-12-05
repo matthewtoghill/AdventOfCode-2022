@@ -26,6 +26,10 @@ public static class Input
         => text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
                .Select(x => T.Parse(x, null));
 
+    public static IEnumerable<T> SplitAs<T>(this string text, params string[] separators) where T : IParsable<T>
+        => text.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+               .Select(x => T.Parse(x, null));
+
     public static string[] SplitOn(this string text, StringSplitOptions splitOptions, params string[] separators)
         => text.Split(separators, splitOptions);
 
