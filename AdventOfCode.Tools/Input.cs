@@ -47,4 +47,18 @@ public static class Input
 
     public static IEnumerable<string> ReadAsParagraphs(int day)
         => ReadAll(day).Split(new[] { "\n\n", "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+    public static T[,] ReadAsGrid<T>() where T : IParsable<T>
+    {
+        var lines = ReadAllLines();
+        var grid = new T[lines.Length, lines[0].Length];
+        for (int x = 0; x < lines.Length; x++)
+        {
+            for (int y = 0; y < lines[x].Length; y++)
+            {
+                grid[x, y] = T.Parse(lines[x][y].ToString(), null);
+            }
+        }
+        return grid;
+    }
 }
