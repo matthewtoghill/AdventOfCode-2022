@@ -8,32 +8,19 @@ Console.WriteLine($"Part 2: {Part2()}");
 long Part1()
 {
     var monkeys = ParseMonkeys(_input);
-    const int reliefValue = 3;
-
-    for (int r = 0; r < 20; r++)
-    {
-        foreach (var monkey in monkeys)
-        {
-            while (monkey.Items.Count > 0)
-            {
-                var item = monkey.Items.Dequeue();
-                monkey.ItemsInspected++;
-                item = monkey.Operation(item);
-                item /= reliefValue;
-                monkeys[item % monkey.Test == 0 ? monkey.TrueIndex : monkey.FalseIndex].Items.Enqueue(item);
-            }
-        }
-    }
-
-    return monkeys.Select(x => x.ItemsInspected).OrderDescending().Take(2).Product();
+    return MonkeyBusiness(monkeys, 20, x => x / 3);
 }
 
 long Part2()
 {
     var monkeys = ParseMonkeys(_input);
     var reliefValue = monkeys.Select(x => x.Test).Product();
+    return MonkeyBusiness(monkeys, 10_000, x => x % reliefValue);
+}
 
-    for (int r = 0; r < 10_000; r++)
+long MonkeyBusiness(List<Monkey> monkeys, int rounds, Func<long, long> reliefCalculation)
+{
+    for (int r = 0; r < rounds; r++)
     {
         foreach (var monkey in monkeys)
         {
@@ -42,7 +29,7 @@ long Part2()
                 var item = monkey.Items.Dequeue();
                 monkey.ItemsInspected++;
                 item = monkey.Operation(item);
-                item %= reliefValue;
+                item = reliefCalculation(item);
                 monkeys[item % monkey.Test == 0 ? monkey.TrueIndex : monkey.FalseIndex].Items.Enqueue(item);
             }
         }
