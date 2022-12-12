@@ -40,9 +40,29 @@ public readonly struct Position
     public static bool operator ==(Position left, Position right) => left.Equals(right);
     public static bool operator !=(Position left, Position right) => !left.Equals(right);
     public static Position operator +(Position left, Position right) => new(left.X + right.X, left.Y + right.Y);
+    public static Position operator +(Position left, (int X, int Y) right) => new(left.X + right.X, left.Y + right.Y);
     public static Position operator -(Position p) => new(-p.X, -p.Y);
     public static Position operator -(Position left, Position right) => new(left.X - right.X, left.Y - right.Y);
+    public static Position operator -(Position left, (int X, int Y) right) => new(left.X - right.X, left.Y - right.Y);
     public static Position operator *(Position left, Position right) => new(left.X * right.X, right.Y * right.Y);
+    public static Position operator *(Position left, (int X, int Y) right) => new(left.X * right.X, right.Y * right.Y);
     public static Position operator /(Position left, Position right) => new(left.X / right.X, right.Y / right.Y);
+    public static Position operator /(Position left, (int X, int Y) right) => new(left.X / right.X, right.Y / right.Y);
 
+    public IEnumerable<Position> GetNeighbours(bool includeDiagonal = false) => includeDiagonal ? GetAllNeighbours() : GetAdjacent();
+
+    public static readonly (int X, int Y)[] CartesianDirections = new[] { (-1, 0), (0, -1), (1, 0), (0, 1) };
+    public static readonly (int X, int Y)[] AllDirections = new[] { (-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1) };
+
+    private IEnumerable<Position> GetAdjacent()
+    {
+        foreach (var dir in CartesianDirections)
+            yield return this + dir;
+    }
+
+    private IEnumerable<Position> GetAllNeighbours()
+    {
+        foreach (var dir in AllDirections)
+            yield return this + dir;
+    }
 }
