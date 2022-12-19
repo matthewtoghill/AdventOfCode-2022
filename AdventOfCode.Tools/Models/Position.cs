@@ -11,15 +11,15 @@ public readonly struct Position
         Y = y;
     }
 
-    public Position MoveInDirection(char dir)
+    public Position MoveInDirection(char direction)
     {
-        return char.ToLower(dir) switch
+        return char.ToLower(direction) switch
         {
-            'u' => new Position(X, Y - 1),
-            'd' => new Position(X, Y + 1),
-            'l' => new Position(X - 1, Y),
-            'r' => new Position(X + 1, Y),
-            _ => new Position(X, Y),
+            'u' => new(X, Y - 1),
+            'd' => new(X, Y + 1),
+            'l' => new(X - 1, Y),
+            'r' => new(X + 1, Y),
+            _ => new(X, Y),
         };
     }
 
@@ -37,17 +37,21 @@ public readonly struct Position
         y = Y;
     }
 
-    public static bool operator ==(Position left, Position right) => left.Equals(right);
-    public static bool operator !=(Position left, Position right) => !left.Equals(right);
-    public static Position operator +(Position left, Position right) => new(left.X + right.X, left.Y + right.Y);
-    public static Position operator +(Position left, (int X, int Y) right) => new(left.X + right.X, left.Y + right.Y);
+    public static bool operator ==(Position a, Position b) => a.Equals(b);
+    public static bool operator !=(Position a, Position b) => !a.Equals(b);
+    public static Position operator +(Position a, Position b) => new(a.X + b.X, a.Y + b.Y);
+    public static Position operator +(Position a, (int X, int Y) b) => new(a.X + b.X, a.Y + b.Y);
     public static Position operator -(Position p) => new(-p.X, -p.Y);
-    public static Position operator -(Position left, Position right) => new(left.X - right.X, left.Y - right.Y);
-    public static Position operator -(Position left, (int X, int Y) right) => new(left.X - right.X, left.Y - right.Y);
-    public static Position operator *(Position left, Position right) => new(left.X * right.X, right.Y * right.Y);
-    public static Position operator *(Position left, (int X, int Y) right) => new(left.X * right.X, right.Y * right.Y);
-    public static Position operator /(Position left, Position right) => new(left.X / right.X, right.Y / right.Y);
-    public static Position operator /(Position left, (int X, int Y) right) => new(left.X / right.X, right.Y / right.Y);
+    public static Position operator -(Position a, Position b) => new(a.X - b.X, a.Y - b.Y);
+    public static Position operator -(Position a, (int X, int Y) b) => new(a.X - b.X, a.Y - b.Y);
+    public static Position operator *(Position a, Position b) => new(a.X * b.X, b.Y * b.Y);
+    public static Position operator *(Position a, (int X, int Y) b) => new(a.X * b.X, b.Y * b.Y);
+    public static Position operator /(Position a, Position b) => new(a.X / b.X, b.Y / b.Y);
+    public static Position operator /(Position a, (int X, int Y) b) => new(a.X / b.X, b.Y / b.Y);
+
+    public bool IsBetween(Position min, Position max)
+        => min.X <= X && X <= max.X
+        && min.Y <= Y && Y <= max.Y;
 
     public IEnumerable<Position> GetNeighbours(bool includeDiagonal = false) => includeDiagonal ? GetAllNeighbours() : GetAdjacent();
 
