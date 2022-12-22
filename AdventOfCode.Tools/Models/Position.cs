@@ -23,6 +23,18 @@ public readonly struct Position
         };
     }
 
+    public Position MoveInOppositeDirection(char direction)
+    {
+        return char.ToLower(direction) switch
+        {
+            'u' => new(X, Y + 1),
+            'd' => new(X, Y - 1),
+            'l' => new(X + 1, Y),
+            'r' => new(X - 1, Y),
+            _ => new(X, Y),
+        };
+    }
+
     public int ManhattanDistance(Position other) => (X, Y).ManhattanDistance((other.X, other.Y));
     public double DirectDistance(Position other) => (X, Y).DirectDistance((other.X, other.Y));
     public int ChessDistance(Position other) => (X, Y).ChessDistance((other.X, other.Y));
