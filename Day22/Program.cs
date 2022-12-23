@@ -79,30 +79,22 @@ public class Program
             }
             else // wrap around the map in the current direction
             {
-                var temp = location;
+                var wrapLocation = location;
                 switch (direction)
                 {
-                    case 'r':
-                        temp = map.Keys.Where(p => p.Y == location.Y).MinBy(p => p.X);
-                        break;
-                    case 'l':
-                        temp = map.Keys.Where(p => p.Y == location.Y).MaxBy(p => p.X);
-                        break;
-                    case 'u':
-                        temp = map.Keys.Where(p => p.X == location.X).MaxBy(p => p.Y);
-                        break;
-                    case 'd':
-                        temp = map.Keys.Where(p => p.X == location.X).MinBy(p => p.Y);
-                        break;
+                    case 'r': wrapLocation = map.Keys.Where(p => p.Y == location.Y).MinBy(p => p.X); break;
+                    case 'l': wrapLocation = map.Keys.Where(p => p.Y == location.Y).MaxBy(p => p.X); break;
+                    case 'u': wrapLocation = map.Keys.Where(p => p.X == location.X).MaxBy(p => p.Y); break;
+                    case 'd': wrapLocation = map.Keys.Where(p => p.X == location.X).MinBy(p => p.Y); break;
                 }
 
-                if (map[temp] == '#')
+                if (map[wrapLocation] == '#')
                 {
                     location = location.MoveInOppositeDirection(direction);
                     break;
                 }
 
-                location = temp;
+                location = wrapLocation;
             }
         }
 
@@ -131,7 +123,7 @@ public class Program
             // A left to D
             else if (X == 51 && Y.IsBetween(1, 50) && direction == 'l')
             {
-                location = new(1, 101 + (50 - Y));
+                location = new(1, 151 - Y);
                 direction = 'r';
             }
             // B up to F
@@ -142,7 +134,7 @@ public class Program
             // B right to E
             else if (X == 150 && Y.IsBetween(1, 50) && direction == 'r')
             {
-                location = new(100, 101 + (50 - Y));
+                location = new(100, 151 - Y);
                 direction = 'l';
             }
             // B down to C
@@ -210,8 +202,7 @@ public class Program
             }
 
             // if the new location is a wall, then return to the original location and direction values
-            //if (map.TryGetValue(location, out char value) && value == '#')
-            if (map.ContainsKey(location) && map[location] == '#')
+            if (map.TryGetValue(location, out char value) && value == '#')
             {
                 location = new(X, Y);
                 direction = originalDirection;
@@ -248,8 +239,6 @@ public class Program
                     case '.':
                     case '#':
                         map.Add(new Position(x + 1, y + 1), mapLines[y][x]);
-                        break;
-                    default:
                         break;
                 }
             }
