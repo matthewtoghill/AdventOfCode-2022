@@ -15,10 +15,10 @@ public readonly struct Position
     {
         return char.ToLower(direction) switch
         {
-            'u' => new(X, Y - 1),
-            'd' => new(X, Y + 1),
-            'l' => new(X - 1, Y),
-            'r' => new(X + 1, Y),
+            'u' or '^' => new(X, Y - 1),
+            'd' or 'v' => new(X, Y + 1),
+            'l' or '<' => new(X - 1, Y),
+            'r' or '>' => new(X + 1, Y),
             _ => new(X, Y),
         };
     }
@@ -27,10 +27,10 @@ public readonly struct Position
     {
         return char.ToLower(direction) switch
         {
-            'u' => new(X, Y + 1),
-            'd' => new(X, Y - 1),
-            'l' => new(X + 1, Y),
-            'r' => new(X - 1, Y),
+            'u' or '^' => new(X, Y + 1),
+            'd' or 'v' => new(X, Y - 1),
+            'l' or '<' => new(X + 1, Y),
+            'r' or '>' => new(X - 1, Y),
             _ => new(X, Y),
         };
     }
