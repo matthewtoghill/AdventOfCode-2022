@@ -10,6 +10,32 @@ public static class EnumerableExtensions
             action(item);
     }
 
+    public static void ForEach<T>(this IEnumerable<T> items, Action<T, int> action)
+    {
+        var index = 0;
+        foreach (T item in items)
+            action(item, index++);
+    }
+
+    public static IEnumerable<T> ApplyEach<T>(this IEnumerable<T> items, Action<T> action)
+    {
+        foreach (T item in items)
+        {
+            action(item);
+            yield return item;
+        }
+    }
+
+    public static IEnumerable<T> ApplyEach<T>(this IEnumerable<T> items, Action<T, int> action)
+    {
+        var index = 0;
+        foreach (T item in items)
+        {
+            action(item, index++);
+            yield return item;
+        }
+    }
+
     public static IEnumerable<T> Without<T>(this IEnumerable<T> items, T value)
         => items.Where(x => !Equals(x, value));
 
@@ -21,4 +47,7 @@ public static class EnumerableExtensions
 
     public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> items)
         => items.SelectMany(x => x);
+
+    public static bool IsAnyOf<T>(this T item, params T[] items)
+        => items.Contains(item);
 }
